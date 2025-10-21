@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>لوحة الطلبات - AYA ELSAYED</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body dir="rtl">
+  <header class="site-header">
+    <div class="logo"><img src="images/logo.png" alt="logo"></div>
+    <nav class="nav"><a href="index.html">الرئيسية</a></nav>
+  </header>
+
+  <main class="container">
+    <h2>الطلبات الواردة</h2>
+    <div id="ordersList">تحميل...</div>
+  </main>
+
+  <script>
+    async function loadOrders(){
+      const username = 'admin'; // ثابت، خليه admin
+      const password = prompt('ادخل كلمة مرور لوحة التحكم'); // سيطلب الباسورد من المستخدم
+      const resp = await fetch('/api/orders', {
+        headers: {
+          'Authorization': 'Basic ' + btoa(username + ':' + password)
+        }
+      });
+      if (resp.status === 401) {
+        document.getElementById('ordersList').innerText = 'غير مصرح - كلمة المرور خاطئة';
+        return;
+      }
+      const data = await resp.json();
+      if (!Array.isArray(data)) {
+        document.getElementById('ordersList').innerText = JSON.stringify(data);
+        return;
+      }
+      const html = data.map(o => `
+        <div class="order-card">
+          <h4>${o.name} — ${o.phone}</h4>
+          <p>المنتج: ${o.product || '-'}</p>
+          <p>الكمية: ${o.quantity}</p>
+          <p>العنوان: ${o.address || '-'}</p>
+          <p>ملاحظات: ${o.note || '-'}</p>
+          <small>تاريخ: ${new Date(o.createdAt).toLocaleString('ar-EG')}</small>
+        </div>
+      `).join('');
+      document.getElementById('ordersList').innerHTML = html || 'لا توجد طلبات';
+    }
+    loadOrders();
+  </script>
+</body>
+</html>

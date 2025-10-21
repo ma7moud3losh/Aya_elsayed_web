@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>اطلب الآن - AYA ELSAYED</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body dir="rtl" class="site">
+  <header class="site-header">
+    <div class="logo"><img src="images/logo.png" alt="logo"></div>
+    <nav class="nav">
+      <a href="index.html">الرئيسية</a>
+      <a href="products.html">المنتجات</a>
+      <a href="about.html">عنا</a>
+      <a href="order.html" class="cta">اطلب الآن</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>نموذج الطلب</h2>
+    <form id="orderForm">
+      <label>الاسم:</label>
+      <input type="text" name="name" required />
+
+      <label>رقم الموبايل:</label>
+      <input type="tel" name="phone" required />
+
+      <label>العنوان:</label>
+      <input type="text" name="address" />
+
+      <label>المنتج:</label>
+      <input type="text" name="product" id="productInput" />
+
+      <label>الكمية:</label>
+      <input type="number" name="quantity" min="1" value="1" />
+
+      <label>ملاحظات:</label>
+      <textarea name="note"></textarea>
+
+      <button type="submit" class="btn">ارسال الطلب</button>
+    </form>
+
+    <div id="result" class="hidden"></div>
+  </main>
+
+  <footer><p>© AYA ELSAYED</p></footer>
+
+  <script>
+  // simple frontend script to read query param product
+  (function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const product = urlParams.get('product');
+    if (product) document.getElementById('productInput').value = decodeURIComponent(product);
+  })();
+  </script>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
